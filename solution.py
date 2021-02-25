@@ -91,14 +91,20 @@ current_node = []
 # =========================
 
 def tick():
+    actions = []
     if len(conflict_finder()) == 0:
         for i in range(len(current_pos)):
-            if current_pos[i][2] == 0:
+            if current_pos[i][1] + 1 == len(node_path[i]):
+                pass
+            elif current_pos[i][2] == 0:
+                actions.append(str(paths[i][current_pos[i][1]+1])+' 1')
                 current_pos[i][0] = node_path[i][current_pos[i][1]+1]
                 current_pos[i][1] += 1
                 current_pos[i][2] = travel[node_path[i][current_pos[i][1]]-1][node_path[i][current_pos[i][1]]]
             else:
                 current_pos[i][2] -= 1
+    if actions:
+        print(actions)
 
 running = True
 tick_count = 0
