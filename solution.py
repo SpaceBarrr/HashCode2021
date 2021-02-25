@@ -71,6 +71,7 @@ def conflict_finder():
 def tick():
     conflict_finder()
 
+output = "test"
 
 running = True
 tick_count = 0
@@ -78,4 +79,8 @@ while running:
     tick()
     if tick_count == duration:
         running = False
+        f = open("sub.txt", "w")
+        f.write(output)
+        f.close()
+        print(output)
     tick_count += 1
