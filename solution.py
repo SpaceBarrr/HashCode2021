@@ -24,7 +24,7 @@ def conflict_finder():
 
 def conflict_resolution(intersection, incoming_streets):
     street = random.randrange(0,len(incoming_streets)-1)
-    
+
     return [street, cars]
 
 def find_incoming_streets(intersection):
@@ -96,10 +96,15 @@ current_node = []
 # =========================
 
 def tick():
+    
     conflicts = conflict_finder()
+    actions = []
     if len(conflicts) == 0:
         for i in range(len(current_pos)):
-            if current_pos[i][2] == 0:
+            if current_pos[i][1] + 1 == len(node_path[i]):
+                pass
+            elif current_pos[i][2] == 0:
+                actions.append(str(paths[i][current_pos[i][1]+1])+' 1')
                 current_pos[i][0] = node_path[i][current_pos[i][1]+1]
                 current_pos[i][1] += 1
                 current_pos[i][2] = travel[node_path[i][current_pos[i][1]]-1][node_path[i][current_pos[i][1]]]
@@ -108,6 +113,9 @@ def tick():
     else:
         for i in range(conflicts):
             conflict_resolution(i, find_incoming_streets(i))
+
+    if actions:
+        print(actions)
 
 running = True
 tick_count = 0
