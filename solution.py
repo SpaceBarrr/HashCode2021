@@ -5,6 +5,7 @@
 import collections
 import random
 from copy import deepcopy
+import os
 
 # =========================
 # FUNCTIONS
@@ -34,9 +35,17 @@ def find_incoming_streets(intersection):
             incoming_streets.append(int(directory[i][0]))
     return incoming_streets
 
+def name_index_intersection(name):
+    for i in range(len(directory)):
+        if directory[i][2] == name:
+            return directory[i][2]
+
 # =========================
 # INIT
 # =========================
+
+if os.path.exists("sub.txt"):
+    os.remove("sub.txt")
 
 file = 'a.txt'
 with open(file, "r+") as f:
@@ -115,7 +124,14 @@ def tick():
             conflict_resolution(i, find_incoming_streets(i))
 
     if actions:
-        print(actions)
+        output = str(actions)
+        output = output.replace("[", "")
+        output = output.replace("]", "")
+        output = output.replace("'", "")
+        output = output.replace(",", "")
+        f = open("sub.txt", "a")
+        f.write(output + "\n")
+        f.close()
 
 running = True
 tick_count = 0
