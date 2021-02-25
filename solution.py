@@ -1,4 +1,5 @@
 import collections
+import random
 
 file ='a.txt'
 
@@ -74,11 +75,19 @@ if len(conflict_finder()) == 0:
         else:
             current_pos[2] -= 1
 
-
-
 def tick():
     conflict_finder()
 
+def conflict_resolution(intersection, incoming_streets):
+    street = random.randrange(0,len(incoming_streets)-1)
+    return street
+
+def find_incoming_streets(intersection):
+    incoming_streets = []
+    for i in range(len(directory)):
+        if int(directory[i][1]) == intersection:
+            incoming_streets.append(intersection)
+    return incoming_streets
 
 running = True
 tick_count = 0
@@ -88,7 +97,6 @@ while running:
         running = False
     tick_count += 1
 
-
-
 print(travel)
 print(directory, node_path)
+
