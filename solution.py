@@ -1,4 +1,12 @@
 # =========================
+# IMPORTS
+# =========================
+
+import collections
+import random
+from copy import deepcopy
+
+# =========================
 # FUNCTIONS
 # =========================
 
@@ -16,7 +24,8 @@ def conflict_finder():
 
 def conflict_resolution(intersection, incoming_streets):
     street = random.randrange(0,len(incoming_streets)-1)
-    return street
+    
+    return [street, cars]
 
 def find_incoming_streets(intersection):
     incoming_streets = []
@@ -28,10 +37,6 @@ def find_incoming_streets(intersection):
 # =========================
 # INIT
 # =========================
-
-import collections
-import random
-from copy import deepcopy
 
 file = 'a.txt'
 with open(file, "r+") as f:
@@ -91,7 +96,8 @@ current_node = []
 # =========================
 
 def tick():
-    if len(conflict_finder()) == 0:
+    conflicts = conflict_finder()
+    if len(conflicts) == 0:
         for i in range(len(current_pos)):
             if current_pos[i][2] == 0:
                 current_pos[i][0] = node_path[i][current_pos[i][1]+1]
@@ -99,6 +105,9 @@ def tick():
                 current_pos[i][2] = travel[node_path[i][current_pos[i][1]]-1][node_path[i][current_pos[i][1]]]
             else:
                 current_pos[i][2] -= 1
+    else:
+        for i in range(conflicts):
+            conflict_resolution(i, find_incoming_streets(i))
 
 running = True
 tick_count = 0
