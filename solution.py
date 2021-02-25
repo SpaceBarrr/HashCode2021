@@ -11,7 +11,7 @@ def change_path(path):
     return node_path
 
 def conflict_finder():
-    conflicts = [item for item, count in collections.Counter(current_pos).items() if count > 1]
+    conflicts = [item for item, count in collections.Counter(current_node).items() if count > 1]
     return conflicts
 
 with open(file, "r+") as f:
@@ -64,15 +64,18 @@ for i in range(cars):
     starting_pos.append(list((int(node_path[i][0]), 0, 0)))
 
 current_pos = starting_pos
+current_node = []
+
 print(current_pos)
 
 if len(conflict_finder()) == 0:
     for i in range(len(current_pos)):
-        if current_pos[2] == 0:
-            current_pos[0] = node_path[i][current_pos[i][1]+1]
-            current_pos[1] += 1
+        if current_pos[i][2] == 0:
+            current_pos[i][0] = node_path[i][current_pos[i][1]]
+            current_pos[i][1] += 1
+            current_pos[i][2] = travel[node_path[i][current_pos[i][1]]][node_path[i][current_pos[i][1]]-1]
         else:
-            current_pos[2] -= 1
+            current_pos[i][2] -= 1
 
 
 
