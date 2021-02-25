@@ -120,16 +120,15 @@ current_node = []
 # =========================
 # TICK SYSTEM
 # =========================
-
+all_actions = []
 def tick():
     conflicts = conflict_finder()
-    actions = []
     if len(conflicts) == 0:
         for i in range(len(current_pos)):
             if current_pos[i][1] + 1 == len(node_path[i]):
                 pass
             elif current_pos[i][2] == 0:
-                actions.append(str(paths[i][current_pos[i][1] + 1]) + ' 1')
+                all_actions.append(str(paths[i][current_pos[i][1] + 1]) )
                 current_pos[i][0] = node_path[i][current_pos[i][1] + 1]
                 current_pos[i][1] += 1
                 current_pos[i][2] = travel[node_path[i][current_pos[i][1]] - 1][node_path[i][current_pos[i][1]]]
@@ -139,12 +138,12 @@ def tick():
         for i in range(conflicts):
             street = conflict_resolution(i, find_incoming_streets(i))
             cars = cars_on_street(street)
-            actions.append(street+' '+str(len(cars)-1))
+            all_actions.append(street+' '+str(len(cars)-1))
             for j in range(cars):
                 if current_pos[j][1] + 1 == len(node_path[j]):
                     pass
                 elif current_pos[j][2] == 0:
-                    actions.append(str(paths[i][current_pos[j][1] + 1]) + ' 1')
+                    all_actions.append(str(paths[i][current_pos[j][1] + 1]))
                     current_pos[j][0] = node_path[i][current_pos[j][1] + 1]
                     current_pos[j][1] += 1
                     current_pos[j][2] = travel[node_path[i][current_pos[j][1]] - 1][node_path[j][current_pos[j][1]]]
@@ -168,4 +167,15 @@ while running:
     tick()
     if tick_count == duration:
         running = False
+        all_actions = collections.Counter(all_actions)
+        if all_actions:
+            output = str(all_actions)
+            output = output.replace("[", "")
+            output = output.replace("]", "")
+            output = output.replace("'", "")
+            output = output.replace(",", "")
+            outpu
+            f = open("sub.txt", "a")
+            f.write(output + "\n")
+            f.close()
     tick_count += 1
