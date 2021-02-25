@@ -1,7 +1,6 @@
 import collections
 
-file = 'a.txt'
-
+file ='a.txt'
 
 def change_path(path):
     node_path = []
@@ -11,6 +10,9 @@ def change_path(path):
                 node_path.append(int(intersection[1]))
     return node_path
 
+def conflict_finder():
+    conflicts = [item for item, count in collections.Counter(current_pos).items() if count > 1]
+    return conflicts
 
 with open(file, "r+") as f:
     data_set_example = f.read()
@@ -32,8 +34,8 @@ directory = []
 paths = []
 
 i = 1
-while i < length - 1:
-    if i < 1 + streets:
+while i < length-1:
+    if i < 1+streets:
         directory.append(data_set_example[i])
         i += 1
     else:
@@ -57,21 +59,26 @@ for row, col, weight in edge_list:
     travel[row][col] = weight
 
 starting_pos = []
+# current position, stop in path, travel tick time
 for i in range(cars):
-    starting_pos.append(int(paths[i][0]))
+    starting_pos.append(list((int(node_path[i][0]), 0, 0)))
 
 current_pos = starting_pos
+print(current_pos)
 
+if len(conflict_finder()) == 0:
+    for i in range(len(current_pos)):
+        if current_pos[2] == 0:
+            current_pos[0] = node_path[i][current_pos[i][1]+1]
+            current_pos[1] += 1
+        else:
+            current_pos[2] -= 1
 
-def conflict_finder():
-    conflicts = [item for item, count in collections.Counter(current_pos).items() if count > 1]
-    return conflicts
 
 
 def tick():
     conflict_finder()
 
-output = "test"
 
 running = True
 tick_count = 0
@@ -79,8 +86,9 @@ while running:
     tick()
     if tick_count == duration:
         running = False
-        f = open("sub.txt", "w")
-        f.write(output)
-        f.close()
-        print(output)
     tick_count += 1
+
+
+
+print(travel)
+print(directory, node_path)
