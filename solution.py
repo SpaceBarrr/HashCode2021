@@ -1,6 +1,7 @@
 import collections
 
-file ='a.txt'
+file = 'a.txt'
+
 
 def change_path(path):
     node_path = []
@@ -10,9 +11,6 @@ def change_path(path):
                 node_path.append(int(intersection[1]))
     return node_path
 
-def conflict_finder():
-    conflicts = [item for item, count in collections.Counter(current_pos).items() if count > 1]
-    return conflicts
 
 with open(file, "r+") as f:
     data_set_example = f.read()
@@ -34,8 +32,8 @@ directory = []
 paths = []
 
 i = 1
-while i < length-1:
-    if i < 1+streets:
+while i < length - 1:
+    if i < 1 + streets:
         directory.append(data_set_example[i])
         i += 1
     else:
@@ -63,3 +61,21 @@ for i in range(cars):
     starting_pos.append(int(paths[i][0]))
 
 current_pos = starting_pos
+
+
+def conflict_finder():
+    conflicts = [item for item, count in collections.Counter(current_pos).items() if count > 1]
+    return conflicts
+
+
+def tick():
+    conflict_finder()
+
+
+running = True
+tick_count = 0
+while running:
+    tick()
+    if tick_count == duration:
+        running = False
+    tick_count += 1
