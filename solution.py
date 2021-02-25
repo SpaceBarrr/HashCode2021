@@ -67,8 +67,6 @@ for i in range(cars):
 current_pos = starting_pos
 current_node = []
 
-print(current_pos)
-
 if len(conflict_finder()) == 0:
     for i in range(len(current_pos)):
         if current_pos[i][2] == 0:
@@ -89,7 +87,7 @@ def find_incoming_streets(intersection):
     incoming_streets = []
     for i in range(len(directory)):
         if int(directory[i][1]) == intersection:
-            incoming_streets.append(intersection)
+            incoming_streets.append(int(directory[i][0]))
     return incoming_streets
 
 running = True
@@ -99,7 +97,3 @@ while running:
     if tick_count == duration:
         running = False
     tick_count += 1
-
-print(travel)
-print(directory, node_path)
-
