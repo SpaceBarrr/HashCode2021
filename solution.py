@@ -1,7 +1,6 @@
-import collections
-import random
-
-file ='a.txt'
+# =========================
+# FUNCTIONS
+# =========================
 
 def change_path(path):
     node_path = []
@@ -15,6 +14,26 @@ def conflict_finder():
     conflicts = [item for item, count in collections.Counter(current_node).items() if count > 1]
     return conflicts
 
+def conflict_resolution(intersection, incoming_streets):
+    street = random.randrange(0,len(incoming_streets)-1)
+    return street
+
+def find_incoming_streets(intersection):
+    incoming_streets = []
+    for i in range(len(directory)):
+        if int(directory[i][1]) == intersection:
+            incoming_streets.append(int(directory[i][0]))
+    return incoming_streets
+
+# =========================
+# INIT
+# =========================
+
+import collections
+import random
+from copy import deepcopy
+
+file = 'a.txt'
 with open(file, "r+") as f:
     data_set_example = f.read()
     f.close()
@@ -64,31 +83,22 @@ starting_pos = []
 for i in range(cars):
     starting_pos.append(list((int(node_path[i][0]), 0, 0)))
 
-current_pos = starting_pos
+current_pos = deepcopy(starting_pos)
 current_node = []
 
-if len(conflict_finder()) == 0:
-    for i in range(len(current_pos)):
-        if current_pos[i][2] == 0:
-            current_pos[i][0] = node_path[i][current_pos[i][1]]
-            current_pos[i][1] += 1
-            current_pos[i][2] = travel[node_path[i][current_pos[i][1]]][node_path[i][current_pos[i][1]]-1]
-        else:
-            current_pos[i][2] -= 1
+# =========================
+# TICK SYSTEM
+# =========================
 
 def tick():
-    conflict_finder()
-
-def conflict_resolution(intersection, incoming_streets):
-    street = random.randrange(0,len(incoming_streets)-1)
-    return street
-
-def find_incoming_streets(intersection):
-    incoming_streets = []
-    for i in range(len(directory)):
-        if int(directory[i][1]) == intersection:
-            incoming_streets.append(int(directory[i][0]))
-    return incoming_streets
+    if len(conflict_finder()) == 0:
+        for i in range(len(current_pos)):
+            if current_pos[i][2] == 0:
+                current_pos[i][0] = node_path[i][current_pos[i][1]+1]
+                current_pos[i][1] += 1
+                current_pos[i][2] = travel[node_path[i][current_pos[i][1]]-1][node_path[i][current_pos[i][1]]]
+            else:
+                current_pos[i][2] -= 1
 
 running = True
 tick_count = 0
