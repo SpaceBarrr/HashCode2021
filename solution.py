@@ -7,7 +7,6 @@ import random
 from copy import deepcopy
 import os
 
-
 # =========================
 # FUNCTIONS
 # =========================
@@ -62,7 +61,7 @@ def cars_on_street(street):
 if os.path.exists("sub.txt"):
     os.remove("sub.txt")
 
-file = 'a.txt'
+file = 'b.txt'
 with open(file, "r+") as f:
     data_set_example = f.read()
     f.close()
@@ -151,7 +150,7 @@ def tick():
                     current_pos[j][2] = travel[node_path[i][current_pos[j][1]] - 1][node_path[j][current_pos[j][1]]]
                 else:
                     current_pos[j][2] -= 1
-
+    
     if actions:
         output = str(actions)
         output = output.replace("[", "")
